@@ -2,12 +2,21 @@ name: Crawler CRON
 
 on:
   workflow_dispatch: # Enables manual triggering from the UI to test current workflow
-  push:
-    branches: [ feature/crawler-cron ]
+  schedule:
+    # This action is scheduled 2 times a day with 12-hour interval, everyday: 00:30, 12:30 UTC
+    # Why 00:30 and 12:30? Because schedules can be delayed in periods of high-loads.
+    # High-load periods are usually the start of every hour
+    - cron: '30 0,12 * * *' 
     
+
 jobs:
   crawl:
     runs-on: ubuntu-latest
+
+    # Define environment variables that are available all steps
+    env:
+      GCP_VM_IP: ${{ secrets.GCP_VM_IP }}
+      GCP_VM_USER: ${{ secrets.GCP_VM_USER }}
 
     steps:
       # Checkout action is needed to clone repo to vm runner
@@ -27,6 +36,17 @@ jobs:
 
       - name: Run crawler
         run: ./bin/crawler
+
+      # Workflow run successfully until this point. Need to test following steps:
       
-      - name: Test Output
-        run: cat ./data/status.json
+      # After crawler step is finished, we need to upload ./data to VM, for that we can use scp
+      # But first, we need to configure ssh in vm runner of GitHub
+      - name: Configure SSH
+        env:
+          GCP_SSH_PRIVATE_KEY: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+         
+        run: chmod +x ./scripts/setup_ssh.sh && ./scripts/setup_ssh.sh
+      
+      - name: Transfer ./data via scp
+        # Here ~/jobs/data/ should be destination for generated result in VM
+        run: scp -r ./data $GCP_VM_USER@$GCP_VM_IP:~/jobs/data/
