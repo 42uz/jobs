@@ -2,8 +2,6 @@ name: Crawler CRON
 
 on:
   workflow_dispatch: # Enables manual triggering from the UI to test current workflow
-  push:
-    branches: [ feature/crawler-cron ] # Temporaty to test workflow before merging to main
   schedule:
     # This action is scheduled 2 times a day with 12-hour interval, everyday: 00:30, 12:30 UTC
     # Why 00:30 and 12:30? Because schedules can be delayed in periods of high-loads.
@@ -14,8 +12,9 @@ on:
 jobs:
   crawl:
     runs-on: ubuntu-latest
+
     permissions:
-      contents: write
+      contents: write # Write permission is needed to create GitHub Release
 
     steps:
       # Checkout action is needed to clone repo to vm runner
@@ -40,7 +39,7 @@ jobs:
         run: zip -r data.zip ./data
       
       - name: Check zipped data
-        run: du -sh ./data data.zip # Temporary to copmare size of ./data and data.zip
+        run: du -sh ./data data.zip 
       
       - name: Create release
         env:
