@@ -40,9 +40,9 @@ jobs:
         run: zip -r data.zip ./data
       
       - name: Check zipped data
-        run: ls -al # Temporary to test
+        run: du -sh ./data data.zip # Temporary to copmare size of ./data and data.zip
       
       - name: Create release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create "data_$(date +'%Y-%m-%dT%H-%MZ')" ./data.zip --title "Latest Data Release"
+        run: gh release create "data_$(date +'%Y-%m-%dT%H-%MZ')" ./data.zip --title "Latest Data Release" --notes "Crawled at $(date)"
