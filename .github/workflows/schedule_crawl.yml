@@ -2,6 +2,8 @@ name: Crawler CRON
 
 on:
   workflow_dispatch: # Enables manual triggering from the UI to test current workflow
+  push:
+    branches: [ feature/crawler-cron ] # Temporaty to test workflow before merging to main
   schedule:
     # This action is scheduled 2 times a day with 12-hour interval, everyday: 00:30, 12:30 UTC
     # Why 00:30 and 12:30? Because schedules can be delayed in periods of high-loads.
@@ -38,7 +40,7 @@ jobs:
         run: zip -r data.zip ./data
       
       - name: Check zipped data
-        run: ls -al
+        run: ls -al # Temporary to test
       
       - name: Create release
         env:
