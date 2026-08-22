@@ -12,11 +12,8 @@ on:
 jobs:
   crawl:
     runs-on: ubuntu-latest
-
-    # Define environment variables that are available all steps
-    env:
-      GCP_VM_IP: ${{ secrets.GCP_VM_IP }}
-      GCP_VM_USER: ${{ secrets.GCP_VM_USER }}
+    permissions:
+      contents: write
 
     steps:
       # Checkout action is needed to clone repo to vm runner
@@ -37,16 +34,13 @@ jobs:
       - name: Run crawler
         run: ./bin/crawler
 
-      # Workflow run successfully until this point. Need to test following steps:
+      - name: Zip output
+        run: zip -r data.zip ./data
       
-      # After crawler step is finished, we need to upload ./data to VM, for that we can use scp
-      # But first, we need to configure ssh in vm runner of GitHub
-      - name: Configure SSH
+      - name: Check zipped data
+        run: ls -al
+      
+      - name: Create release
         env:
-          GCP_SSH_PRIVATE_KEY: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
-         
-        run: chmod +x ./scripts/setup_ssh.sh && ./scripts/setup_ssh.sh
-      
-      - name: Transfer ./data via scp
-        # Here ~/jobs/data/ should be destination for generated result in VM
-        run: scp -r ./data $GCP_VM_USER@$GCP_VM_IP:~/jobs/data/
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "data_$(date +'%Y-%m-%dT%H-%MZ')" ./data.zip --title "Latest Data Release"
