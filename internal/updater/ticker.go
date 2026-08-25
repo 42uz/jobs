@@ -20,7 +20,7 @@ func StartTickerSync(downloadURL, targetDir string, idx *httpapi.Index, st *stor
 		defer ticker.Stop()
 
 		for range ticker.C {
-			log.Println("[Ticker] 2 hours elapsed. Checking GitHub Releases for updates...")
+			log.Println("[Ticker] 1 hour elapsed. Checking GitHub Releases for updates...")
 			if err := SyncData(downloadURL, targetDir, idx, st); err != nil {
 				log.Printf("[Ticker] Scheduled background sync failed: %v", err)
 			}
