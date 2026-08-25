@@ -19,6 +19,7 @@ import (
 	"faangjobs/internal/dataset"
 	"faangjobs/internal/httpapi"
 	"faangjobs/internal/store"
+	"faangjobs/internal/updater"
 )
 
 // envOr returns the environment variable's value, or def when unset/empty.
@@ -51,7 +52,8 @@ func main() {
 		webDir   = flag.String("web-dir", "", "serve frontend from this directory instead of the embedded build")
 		reload   = flag.Duration("reload", 30*time.Second, "how often to check the data folder for changes")
 		embedded = flag.Bool("embedded", false, "serve the data snapshot embedded in the binary (ignore -data)")
-
+		downloadURL = flag.String("download-url", "https://github.com/42uz/jobs/releases/latest/download/data.zip", "URL to fetch the latest data zip release")
+		
 		// 42.uz authentication. Auth is enabled iff a JWT secret is provided
 		// (flag or FAANGJOBS_JWT_SECRET env); without one the board is open
 		// (local dev / self-hosting).
@@ -90,6 +92,11 @@ func main() {
 	}
 
 	idx := httpapi.NewIndex(st, logger.Printf)
+
+	if !*embedded {
+		log.Println("Starting background release sync ticker (1-hour interval)...")
+		updater.StartTickerSync(*downloadURL, *dataDir, idx, st)
+	}
 
 	// Hot reload only makes sense for the mutable on-disk folder.
 	stopReload := make(chan struct{})
