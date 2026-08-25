@@ -44,6 +44,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-        RELEASE_TAG="data_$(date -u +'%Y-%m-%dT%H-%MZ')"
-        CRAWLED_AT="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-        gh release create "$RELEASE_TAG" ./data.zip --title "Latest" --notes "Crawled at $CRAWLED_AT"
+          RELEASE_TAG="data_$(date -u +'%Y-%m-%dT%H-%MZ')"
+          CRAWLED_AT="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          gh release create "$RELEASE_TAG" ./data.zip --title "Latest" --notes "Crawled at $CRAWLED_AT"
