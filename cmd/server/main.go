@@ -94,7 +94,7 @@ func main() {
 	idx := httpapi.NewIndex(st, logger.Printf)
 
 	if !*embedded {
-		log.Println("Starting background release sync ticker (1-hour interval)...")
+		log.Println("Starting background release sync ticker (30-minute interval)...")
 		updater.StartTickerSync(*downloadURL, *dataDir, idx, st)
 	}
 

@@ -2,8 +2,7 @@ name: Crawler CRON
 
 on:
   workflow_dispatch: # Enables manual triggering from the UI to test current workflow
-  push:
-    branches: [ feature/crawler-cron ]
+
   schedule:
     # This action is scheduled at minute 30 of every two hours
     - cron: '30 */2 * * *'    

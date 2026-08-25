@@ -16,11 +16,11 @@ func StartTickerSync(downloadURL, targetDir string, idx *httpapi.Index, st *stor
 			log.Printf("[Ticker] Initial sync attempt notice: %v", err)
 		}
 
-		ticker := time.NewTicker(5 * time.Minute)
+		ticker := time.NewTicker(30 * time.Minute)
 		defer ticker.Stop()
 
 		for range ticker.C {
-			log.Println("[Ticker] 1 hour elapsed. Checking GitHub Releases for updates...")
+			log.Println("[Ticker] 30 minutes elapsed. Checking GitHub Releases for updates...")
 			if err := SyncData(downloadURL, targetDir, idx, st); err != nil {
 				log.Printf("[Ticker] Scheduled background sync failed: %v", err)
 			}
