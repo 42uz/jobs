@@ -2,12 +2,11 @@ name: Crawler CRON
 
 on:
   workflow_dispatch: # Enables manual triggering from the UI to test current workflow
+  push:
+    branches: [ feature/crawler-cron ]
   schedule:
-    # This action is scheduled 2 times a day with 12-hour interval, everyday: 00:30, 12:30 UTC
-    # Why 00:30 and 12:30? Because schedules can be delayed in periods of high-loads.
-    # High-load periods are usually the start of every hour
-    - cron: '30 0,12 * * *' 
-    
+    # This action is scheduled at minute 30 of every two hours
+    - cron: '30 */2 * * *'    
 
 jobs:
   crawl:
@@ -36,7 +35,7 @@ jobs:
         run: ./bin/crawler
 
       - name: Zip output
-        run: zip -r data.zip ./data
+        run: zip -9 -r data.zip ./data
       
       - name: Check zipped data
         run: du -sh ./data data.zip 
@@ -44,4 +43,7 @@ jobs:
       - name: Create release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create "data_$(date +'%Y-%m-%dT%H-%MZ')" ./data.zip --title "Latest Data Release" --notes "Crawled at $(date)"
+        run: |
+        RELEASE_TAG="data_$(date -u +'%Y-%m-%dT%H-%MZ')"
+        CRAWLED_AT="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+        gh release create "$RELEASE_TAG" ./data.zip --title "Latest" --notes "Crawled at $CRAWLED_AT"
