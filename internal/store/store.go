@@ -268,6 +268,23 @@ func writeFileAtomic(path string, data []byte) error {
 	return nil
 }
 
+// IsEmbedded reports whether the store is currently using the embedded read-only FS.
+func (s *Store) IsEmbedded() bool {
+	return s.fsys != nil
+}
+
+// SwitchToDisk reconfigures an embedded store handle to point to an on-disk directory.
+func (s *Store) SwitchToDisk(dir string) error {
+	companiesDir := filepath.Join(dir, "companies")
+	if err := os.MkdirAll(companiesDir, 0o755); err != nil {
+		return fmt.Errorf("create data dir: %w", err)
+	}
+	s.dir = dir
+	s.companiesDir = companiesDir
+	s.fsys = nil
+	return nil
+}
+
 var unsafeName = strings.NewReplacer("/", "_", "\\", "_", "..", "_", ":", "_", " ", "_")
 
 // safeName sanitizes an id for use as a filename. Because the sanitization is

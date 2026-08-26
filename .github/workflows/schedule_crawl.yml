@@ -1,0 +1,48 @@
+name: Crawler CRON
+
+on:
+  workflow_dispatch: # Enables manual triggering from the UI to test current workflow
+
+  schedule:
+    # This action is scheduled at minute 30 of every two hours
+    - cron: '30 */2 * * *'    
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # Write permission is needed to create GitHub Release
+
+    steps:
+      # Checkout action is needed to clone repo to vm runner
+      - uses: actions/checkout@v6
+
+      # By default vm runner comes with pre-installed, but we explicitly need to specify to avoid version mismatches
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version: '1.25'
+
+      - name: Build binary
+        run: go build -o bin/crawler ./cmd/crawler
+
+      - name: Give permission to execute binary
+        run: chmod +x bin/crawler
+
+      - name: Run crawler
+        run: ./bin/crawler
+
+      - name: Zip output
+        run: zip -9 -r data.zip ./data
+      
+      - name: Check zipped data
+        run: du -sh ./data data.zip 
+      
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RELEASE_TAG="data_$(date -u +'%Y-%m-%dT%H-%MZ')"
+          CRAWLED_AT="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          gh release create "$RELEASE_TAG" ./data.zip --title "Latest" --notes "Crawled at $CRAWLED_AT"
