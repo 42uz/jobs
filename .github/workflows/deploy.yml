@@ -39,4 +39,3 @@ jobs:
       
       - name: get cluster credentials
         run: gcloud container clusters get-credentials klaster --location=europe-central2
-          
