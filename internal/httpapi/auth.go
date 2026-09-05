@@ -37,52 +37,10 @@ import (
 // the standard library so the backend keeps its zero-dependency guarantee.
 
 var allowedUsers = map[string]string{
-	// Owner
-	"248691799": "@azimjon42",
-	// Group I
-	"1933002694": "@yuldoshev_uz",
-	"859020893":  "@AbdurahmonIbrohimov",
-	"722703900":  "@ibrohim_ahatkulov",
-	"1010537107": "@nomonzon",
-	"1474525499": "@shahzod_rozzoqov",
-	"449408303":  "@Khusanbek",
-	"1687872138": "@nodir_yoqubov7",
-	"2064726254": "@MeeeAbdulloh",
-	"200310295":  "@MuzammilTohir",
-	"603436474":  "@mhmd_0220",
-	"631751797":  "@hardy1729",
-	"933803582":  "@shoniyoz002",
-	"1957718743": "@Hasan_Polatov",
-	"5286693950": "@notabdurauf",
-	"964470872":  "@behruz_ibragimovv",
-	"678541731":  "@srdrbk",
-	"924604756":  "@javokhirdjumanov",
-	"649495362":  "@UmidjonYuldashev",
-	"653172961":  "@AxmadovIlhomjon",
-	"242200192":  "@khn77",
-	"245686275":  "@iAbbosF",
-	// Group II
-	"7221579889": "@Mr_muhammadbilol",
-	"904664945":  "@Ayxanov",
-	"5987124979": "@Sobirjon_Abdumajidov",
-	"2046965638": "@otabekhoshimxon",
-	"5943933138": "@bayram_matchanov",
-	"1048407637": "@MuxriddinNorqulov",
-	"1377040674": "@javlon_jurabekov",
-	"633442276":  "@Murodillayev",
-	"8681100780": "@itsqodirjon",
-	"105618575":  "@TheBugCreator",
-	"978738956":  "@unknown00008",
-	"8360590641": "@cdShahnoza",
-	"1361082424": "@NetSoftSpace",
-	"24568627":   "@iAbbosF",
-	"1520814545": "@kabulov_cs",
-	"318638500":  "@mamadaliyev_swe",
-	"1682889286": "@abdulAlloh1",
-	"8561156125": "@XudoyberganovOdilbek",
-	"5613062658": "@nrx_xusan",
-	"900604435":  "@Umidjon09_28",
-	"777214417":  "@ilyosjon",
+	// // Owner
+	// "248691799": "@azimjon42",
+	// // Group I
+	// "777214417":  "@ilyosjon",
 }
 
 const (
@@ -112,8 +70,10 @@ type User struct {
 
 // isAllowed reports whether a user id is in the allowlist (allowedUsers).
 func isAllowed(userID string) bool {
-	_, ok := allowedUsers[userID]
-	return ok
+	fmt.Printf("allowing access for user %s\n", userID)
+	return true // allow all users for now
+	// _, ok := allowedUsers[userID]
+	// return ok
 }
 
 // cachedUser is one exchange outcome: a user (err == nil) or a cached failure

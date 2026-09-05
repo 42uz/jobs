@@ -89,6 +89,13 @@ export const tracker = {
       [job.id]: { at: prev?.at ?? Date.now(), status, job: prev?.job ?? slim(job) },
     })
   },
+  // move restages an already-tracked application by id — what the board's
+  // drag-and-drop needs, where only the card's id travels in the drag payload.
+  move(id: string, status: Status) {
+    const prev = cache[id]
+    if (!prev || prev.status === status) return
+    write({ ...cache, [id]: { ...prev, status } })
+  },
   remove(id: string) {
     if (!cache[id]) return
     const next = { ...cache }

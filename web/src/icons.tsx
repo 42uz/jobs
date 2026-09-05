@@ -35,3 +35,16 @@ export const Moon = () => (
 export const Menu = () => (
   <svg {...base(17)} aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
 )
+export const ChevronLeft = () => (
+  <svg {...base(13)} aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+)
+export const ChevronRight = () => (
+  <svg {...base(13)} aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+)
+export const GripIcon = () => (
+  <svg width={10} height={14} viewBox="0 0 10 14" aria-hidden="true" fill="currentColor">
+    <circle cx="2.5" cy="3" r="1.2" /><circle cx="7.5" cy="3" r="1.2" />
+    <circle cx="2.5" cy="7" r="1.2" /><circle cx="7.5" cy="7" r="1.2" />
+    <circle cx="2.5" cy="11" r="1.2" /><circle cx="7.5" cy="11" r="1.2" />
+  </svg>
+)

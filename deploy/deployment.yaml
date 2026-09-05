@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobs42
+spec:
+  selector:
+    matchLabels:
+      app: jobs42      
+  template:
+    metadata:
+      labels:
+        app: jobs42
+    spec:
+      containers:
+      - name: jobs42
+        image: europe-central2-docker.pkg.dev/helpful-brand-400112/job42/binary:asdfa
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
