@@ -38,13 +38,14 @@ jobs:
 
       - name: install kubectl
         run: gcloud components install gke-gcloud-auth-plugin
-      
+
       - name: get cluster credentials
         run: gcloud container clusters get-credentials klaster --location=europe-central2
-
+    needs: build
+ 
   deploy:
     runs-on: "ubuntu-latest"
     steps:
       - name: deploy new image to cluster
         run: kubectl set image deploy/jobs42 jobs42=europe-central2-docker.pkg.dev/helpful-brand-400112/job42/binary:${{ github.sha }}
-    
+    needs: push
