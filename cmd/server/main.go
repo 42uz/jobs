@@ -50,7 +50,7 @@ func main() {
 		dataDir  = flag.String("data", "./data", "directory to read crawled data from")
 		addr     = flag.String("addr", ":8080", "listen address")
 		webDir   = flag.String("web-dir", "", "serve frontend from this directory instead of the embedded build")
-		reload   = flag.Duration("reload", 30*time.Second, "how often to check the data folder for changes")
+		reload   = flag.Duration("reload", 60*time.Second, "how often to check the data folder for changes")
 		embedded = flag.Bool("embedded", false, "serve the data snapshot embedded in the binary (ignore -data)")
 		downloadURL = flag.String("download-url", "https://github.com/42uz/jobs/releases/latest/download/data.zip", "URL to fetch the latest data zip release")
 		
