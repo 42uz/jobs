@@ -32,7 +32,7 @@ jobs:
               run: docker push europe-central2-docker.pkg.dev/helpful-brand-400112/job42/binary:${{ github.sha }}
             
             - name: kubernetes install
-              run: gcloud components install gke-gcloud-auth-plugin
+              run: sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
             
             - name: cluster credentials
               run: gcloud container clusters get-credentials klaster --location=europe-central2
