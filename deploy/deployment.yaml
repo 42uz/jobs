@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: jobs42
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: jobs42      
@@ -13,7 +14,7 @@ spec:
     spec:
       containers:
       - name: jobs42
-        image: europe-central2-docker.pkg.dev/helpful-brand-400112/job42/binary:latest
+        image: europe-central2-docker.pkg.dev/helpful-brand-400112/job42/binary:b83ed28b0a40c42e25232c220af1296925b87d4a
         resources:
           requests:
             memory: "512Mi"
