@@ -5,7 +5,7 @@ on:
         branches: [ main ]
 
 jobs:
-    deploy:
+    build:
         runs-on: ubuntu-latest
         steps:
             - name: bring the code
@@ -17,6 +17,9 @@ jobs:
             - name: docker build
               run: docker build -t jobs42:latest .
 
+    push:
+        runs-on: ubuntu-latest
+        steps:
             - name: docker tag
               run: docker tag jobs42:latest europe-central2-docker.pkg.dev/helpful-brand-400112/job42/binary:${{ github.sha }}
 
@@ -36,7 +39,9 @@ jobs:
 
             - name: docker push
               run: docker push europe-central2-docker.pkg.dev/helpful-brand-400112/job42/binary:${{ github.sha }}
-            
+    rollout:
+        runs-on: ubuntu-latest
+        steps:
             - name: kubernetes install
               run: gcloud components install gke-gcloud-auth-plugin
             
