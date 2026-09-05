@@ -41,4 +41,4 @@ jobs:
         run: gcloud container clusters get-credentials klaster --location=europe-central2
 
       - name: deploy new image to cluster
-        run: kubectl set image deploy/jobs42 europe-central2-docker.pkg.dev/helpful-brand-400112/job42/binary:${{ github.sha }}
+        run: kubectl set image deploy/jobs42 jobs42=europe-central2-docker.pkg.dev/helpful-brand-400112/job42/binary:${{ github.sha }}

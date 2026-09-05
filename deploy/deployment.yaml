@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: jobs42
-        image: europe-central2-docker.pkg.dev/helpful-brand-400112/job42/binary:6ada76
+        image: europe-central2-docker.pkg.dev/helpful-brand-400112/job42/binary:latest
         resources:
           requests:
             memory: "512Mi"
